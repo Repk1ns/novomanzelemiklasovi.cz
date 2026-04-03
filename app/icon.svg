@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="heartFill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8e4653" />
+      <stop offset="100%" stop-color="#5f2834" />
+    </linearGradient>
+    <linearGradient id="letterFill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fffaf8" />
+      <stop offset="100%" stop-color="#f4e3df" />
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="#fbf6f3" />
+  <path
+    d="M64 108C58 101 50 95 39 87C27 77 18 67 18 52C18 37 29 26 43 26C53 26 60 31 64 38C68 31 75 26 85 26C99 26 110 37 110 52C110 67 101 77 89 87C78 95 70 101 64 108Z"
+    fill="url(#heartFill)"
+  />
+  <path
+    d="M42 83V45H50L64 65L78 45H86V83H77V60L66 76H62L51 60V83H42Z"
+    fill="url(#letterFill)"
+  />
+</svg>
