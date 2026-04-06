@@ -1,8 +1,14 @@
 "use client";
 
+import { Sacramento } from "next/font/google";
 import { useEffect, useMemo, useState } from "react";
 
 import { navigation } from "./site-data";
+
+const sacramento = Sacramento({
+  subsets: ["latin"],
+  weight: "400",
+});
 
 export default function Navbar() {
   const [activeSection, setActiveSection] = useState("#uvod");
@@ -49,9 +55,8 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 border-b border-[#e8dbd7]/80 bg-[#faf6f2]/92 backdrop-blur-xl">
       <div className="flex w-full items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <a
-          className="shrink-0 text-[2.3rem] leading-none tracking-[0.04em] text-[#5d2d36] sm:text-[2.6rem]"
+          className={`${sacramento.className} shrink-0 text-[2.5rem] leading-none text-[#5d2d36] sm:text-[2.9rem]`}
           href="#uvod"
-          style={{ fontFamily: "var(--font-brand)" }}
         >
           Miklášovi
         </a>

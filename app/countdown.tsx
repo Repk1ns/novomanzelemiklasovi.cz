@@ -33,17 +33,37 @@ function getTimeLeft(targetDate: string): CountdownUnit[] {
 }
 
 export default function Countdown({ targetDate }: CountdownProps) {
-  const [timeLeft, setTimeLeft] = useState<CountdownUnit[]>(() =>
-    getTimeLeft(targetDate),
-  );
+  const [timeLeft, setTimeLeft] = useState<CountdownUnit[] | null>(null);
 
   useEffect(() => {
+    setTimeLeft(getTimeLeft(targetDate));
+
     const interval = window.setInterval(() => {
       setTimeLeft(getTimeLeft(targetDate));
     }, 1000);
 
     return () => window.clearInterval(interval);
   }, [targetDate]);
+
+  if (timeLeft === null) {
+    return (
+      <div className="mt-3 flex flex-nowrap items-center justify-center gap-1.5 sm:flex-wrap sm:gap-2.5">
+        {["dny", "hodin", "minut", "sekund"].map((label) => (
+          <div
+            key={label}
+            className="min-w-16 rounded-xl border border-white/70 bg-white/45 px-2 py-1.5 shadow-[0_10px_22px_rgba(82,45,54,0.05)] backdrop-blur sm:min-w-22 sm:px-3.5 sm:py-2.5"
+          >
+            <div className="font-(--font-display) text-xl text-[#4e2731] sm:text-2xl">
+              --
+            </div>
+            <div className="mt-0.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#94606a] sm:text-[10px] sm:tracking-[0.2em]">
+              {label}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   if (timeLeft.length === 0) {
     return (

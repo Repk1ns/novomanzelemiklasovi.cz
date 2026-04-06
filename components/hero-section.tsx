@@ -1,4 +1,11 @@
+import { Sacramento } from "next/font/google";
+
 import Countdown from "@/app/countdown";
+
+const sacramento = Sacramento({
+  subsets: ["latin"],
+  weight: "400",
+});
 
 export default function HeroSection() {
   return (
@@ -21,8 +28,7 @@ export default function HeroSection() {
 
       <div className="relative flex w-full max-w-4xl flex-col items-center text-center">
         <h1
-          className="mt-6 whitespace-nowrap text-[3.1rem] leading-[0.92] tracking-[0.03em] text-[#4e2731] drop-shadow-[0_10px_28px_rgba(78,39,49,0.12)] sm:text-[5.5rem] lg:text-[7.4rem]"
-          style={{ fontFamily: "var(--font-hero)", fontWeight: 500 }}
+          className={`${sacramento.className} mt-6 whitespace-nowrap text-[4.2rem] leading-[0.9] text-[#4e2731] drop-shadow-[0_10px_28px_rgba(78,39,49,0.12)] sm:text-[6.1rem] lg:text-[7.9rem]`}
         >
           Vezmeme se
         </h1>
