@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: novomanzelemiklasovi-web
+  namespace: novomanzelemiklasovi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: novomanzelemiklasovi
+  template:
+    metadata:
+      labels:
+        app: novomanzelemiklasovi
+    spec:
+      containers:
+        - name: web
+          image: ghcr.io/repk1ns/novomanzelemiklasovi.cz:v1.0.0
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: next-cache
+              mountPath: /app/.next/cache
+      volumes:
+        - name: next-cache
+          emptyDir: {}
+      imagePullSecrets:
+        - name: github-packages

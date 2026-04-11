@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: novomanzelemiklasovi-web
+  namespace: novomanzelemiklasovi
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  labels:
+    app: novomanzelemiklasovi
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: novomanzelemiklasovi.cz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: novomanzelemiklasovi-web
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - novomanzelemiklasovi.cz
+      secretName: novomanzelemiklasovi-tls
