@@ -4,12 +4,16 @@ function MapCard({
   label,
   title,
   href,
+  embedSrc,
   frameTitle,
+  buttonLabel,
 }: {
   label: string;
   title: string;
   href: string;
+  embedSrc: string;
   frameTitle: string;
+  buttonLabel: string;
 }) {
   return (
     <div className="rounded-3xl bg-white/80 p-5">
@@ -22,7 +26,7 @@ function MapCard({
           className="h-56 w-full bg-white"
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
-          src={href}
+          src={embedSrc}
           title={frameTitle}
         />
         <div className="px-4 py-4">
@@ -32,7 +36,7 @@ function MapCard({
             rel="noreferrer"
             target="_blank"
           >
-            Otevřít v Mapy.com
+            {buttonLabel}
           </a>
         </div>
       </div>

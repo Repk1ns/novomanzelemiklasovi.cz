@@ -9,6 +9,12 @@ type FormState = {
   allergens: string;
 };
 
+type SubmitState =
+  | { status: "idle" }
+  | { status: "submitting" }
+  | { status: "success"; message: string }
+  | { status: "error"; message: string };
+
 type SelectOption = {
   value: string;
   label: string;
@@ -22,12 +28,35 @@ type FancySelectProps = {
   onChange: (value: string) => void;
 };
 
+const RSVP_ENDPOINT = process.env.NEXT_PUBLIC_RSVP_ENDPOINT ?? "";
+const RSVP_RECIPIENT = "popelkajan77@gmail.com";
+
 const initialState: FormState = {
   name: "",
   attendance: "ano",
   accommodation: "ne",
   allergens: "",
 };
+
+const attendanceOptions: SelectOption[] = [
+  { value: "ano", label: "Dorazím" },
+  { value: "ne", label: "Nedorazím" },
+  { value: "upresnim", label: "Dám vědět později" },
+];
+
+const accommodationOptions: SelectOption[] = [
+  { value: "ne", label: "Ne, děkuji" },
+  { value: "ano", label: "Ano, mám zájem" },
+  { value: "mozna", label: "Možná, ještě upřesním" },
+];
+
+const attendanceLabels = Object.fromEntries(
+  attendanceOptions.map((option) => [option.value, option.label]),
+) as Record<string, string>;
+
+const accommodationLabels = Object.fromEntries(
+  accommodationOptions.map((option) => [option.value, option.label]),
+) as Record<string, string>;
 
 const fieldClassName =
   "w-full rounded-[1.4rem] border border-[#ddc8c6] bg-[linear-gradient(180deg,#fffdfc_0%,#faf3f1_100%)] px-4 py-2 text-base text-stone-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_10px_24px_rgba(82,45,54,0.04)] outline-none transition focus:border-[#9e6470] focus:ring-4 focus:ring-[#f1dde1]";
@@ -129,10 +158,9 @@ function FancySelect({
 
 export default function RsvpForm() {
   const [formState, setFormState] = useState<FormState>(initialState);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitState, setSubmitState] = useState<
-    { kind: "idle" } | { kind: "success" } | { kind: "error"; message: string }
-  >({ kind: "idle" });
+  const [submitState, setSubmitState] = useState<SubmitState>({
+    status: "idle",
+  });
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -145,37 +173,56 @@ export default function RsvpForm() {
       return;
     }
 
-    try {
-      setIsSubmitting(true);
-      setSubmitState({ kind: "idle" });
+    if (!RSVP_ENDPOINT) {
+      setSubmitState({
+        status: "error",
+        message:
+          "Frontend je připravený, ale zatím není nastavený backend endpoint pro odeslání formuláře.",
+      });
+      return;
+    }
 
-      const response = await fetch("/api/rsvp", {
+    setSubmitState({ status: "submitting" });
+
+    try {
+      const response = await fetch(RSVP_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formState),
+        body: JSON.stringify({
+          recipientEmail: RSVP_RECIPIENT,
+          submittedAt: new Date().toISOString(),
+          source: "svatebni-web",
+          guest: {
+            name: formState.name.trim(),
+            attendance: formState.attendance,
+            attendanceLabel: attendanceLabels[formState.attendance],
+            accommodation: formState.accommodation,
+            accommodationLabel: accommodationLabels[formState.accommodation],
+            allergens: formState.allergens.trim(),
+          },
+        }),
       });
 
-      const payload = (await response.json()) as { error?: string };
-
       if (!response.ok) {
-        throw new Error(payload.error || "Odeslání formuláře se nepodařilo.");
+        throw new Error("Backend vrátil chybu při odesílání formuláře.");
       }
 
-      setSubmitState({ kind: "success" });
-      setFormState(initialState);
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Odeslání formuláře se nepodařilo.";
-
-      setSubmitState({ kind: "error", message });
-    } finally {
-      setIsSubmitting(false);
+      setSubmitState({
+        status: "success",
+        message: `Děkujeme, ${formState.name}. Vaše odpověď byla připravena k odeslání na ${RSVP_RECIPIENT}.`,
+      });
+    } catch {
+      setSubmitState({
+        status: "error",
+        message:
+          "Odpověď se zatím nepodařilo odeslat. Jakmile bude backend připravený, formulář začne fungovat bez dalších změn ve vzhledu.",
+      });
     }
   }
+
+  const isSubmitting = submitState.status === "submitting";
 
   return (
     <form className="space-y-5" onSubmit={handleSubmit}>
@@ -200,11 +247,7 @@ export default function RsvpForm() {
         <FancySelect
           label="Potvrzení účasti"
           name="attendance"
-          options={[
-            { value: "ano", label: "Dorazím" },
-            { value: "ne", label: "Nedorazím" },
-            { value: "upresnim", label: "Dám vědět později" },
-          ]}
+          options={attendanceOptions}
           value={formState.attendance}
           onChange={(attendance) =>
             setFormState((current) => ({
@@ -219,11 +262,7 @@ export default function RsvpForm() {
         <FancySelect
           label="Zájem o ubytování"
           name="accommodation"
-          options={[
-            { value: "ne", label: "Ne, děkuji" },
-            { value: "ano", label: "Ano, mám zájem" },
-            { value: "mozna", label: "Možná, ještě upřesním" },
-          ]}
+          options={accommodationOptions}
           value={formState.accommodation}
           onChange={(accommodation) =>
             setFormState((current) => ({
@@ -252,7 +291,7 @@ export default function RsvpForm() {
 
       <div className="pt-2">
         <button
-          className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#7b3a47_0%,#5f2834_100%)] px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#fff7f3] shadow-[0_16px_28px_rgba(95,40,52,0.2)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgba(95,40,52,0.26)] disabled:cursor-wait disabled:opacity-70"
+          className="inline-flex items-center justify-center rounded-full bg-[linear-gradient(135deg,#7b3a47_0%,#5f2834_100%)] px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#fff7f3] shadow-[0_16px_28px_rgba(95,40,52,0.2)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgba(95,40,52,0.26)] disabled:cursor-not-allowed disabled:opacity-70"
           disabled={isSubmitting}
           type="submit"
         >
@@ -260,15 +299,21 @@ export default function RsvpForm() {
         </button>
       </div>
 
-      {submitState.kind === "success" ? (
+      {submitState.status === "success" ? (
         <div className="rounded-3xl border border-[#dec8cb] bg-[linear-gradient(180deg,#fff7f5_0%,#fff1ee_100%)] px-5 py-4 text-sm leading-7 text-stone-700 shadow-[0_14px_28px_rgba(82,45,54,0.05)]">
-          Děkujeme. Vaše odpověď byla úspěšně odeslaná.
+          {submitState.message}
         </div>
       ) : null}
 
-      {submitState.kind === "error" ? (
-        <div className="rounded-3xl border border-[#e1c5c8] bg-[linear-gradient(180deg,#fff6f6_0%,#ffefef_100%)] px-5 py-4 text-sm leading-7 text-[#7a3544] shadow-[0_14px_28px_rgba(82,45,54,0.05)]">
+      {submitState.status === "error" ? (
+        <div className="rounded-3xl border border-[#e5c8c1] bg-[linear-gradient(180deg,#fff8f6_0%,#fff2ef_100%)] px-5 py-4 text-sm leading-7 text-[#7a3c47] shadow-[0_14px_28px_rgba(122,60,71,0.05)]">
           {submitState.message}
+          {!RSVP_ENDPOINT ? (
+            <div className="mt-2 text-xs uppercase tracking-[0.16em] text-[#a16671]">
+              Nastavte `NEXT_PUBLIC_RSVP_ENDPOINT`, jakmile bude backend
+              připravený.
+            </div>
+          ) : null}
         </div>
       ) : null}
     </form>

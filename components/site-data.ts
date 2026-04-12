@@ -14,18 +14,28 @@ export const timeline = [
     text: "Sejdeme se v kostele Povýšení sv. Kříže ve Strání a řekneme si své ano.",
   },
   {
-    time: "14:00",
-    title: "Slavnostní oběd",
+    time: "13:30",
+    title: "Oběd",
     text: "Po přesunu do Květné společně usedneme ke sváteční tabuli.",
   },
   {
-    time: "17:00",
+    time: "14:30",
     title: "Krájení dortu",
-    text: "Dáme si dort, kávu a chvíli na klidné povídání s rodinou i přáteli.",
+    text: "Dáme si dort, kávu a chvíli na sladké zastavení s rodinou i přáteli.",
   },
   {
-    time: "19:00",
-    title: "Večerní oslava",
+    time: "15:00",
+    title: "Společné focení",
+    text: "Najdeme si chvíli na společné fotografie a hezké vzpomínky.",
+  },
+  {
+    time: "17:00",
+    title: "Dětská diskotéka",
+    text: "Pro malé hosty přijde čas na tanec, hudbu a zábavu.",
+  },
+  {
+    time: "18:00",
+    title: "Party",
     text: "Hudba, přípitky, tanec a všechno hezké, co k takovému dni patří.",
   },
 ];
@@ -56,7 +66,7 @@ export const highlights = [
   },
   {
     title: "Tip na dárek",
-    text: "Pátek už nějaký ten čas sdílíme společně, a tak další skleničky nevyužijeme. Pokud nás budete chtít potěšit, přispějte nám raději na cestu, kde si ženich užije svoji milou nevěstu.",
+    text: "Nějaký ten pátek žijeme už společně, proto nové sklenky jsou pro nás již zbytečné. Chcete-li nás obdarovat, přispějte nám raději na cestu, kde si ženich užije svoji milou nevěstu.",
   },
   {
     title: "Malá prosba",
@@ -68,14 +78,20 @@ export const mapCards = {
   ceremony: {
     label: "Obřad",
     title: "Kostel Povýšení sv. Kříže",
-    href: "https://mapy.com/cs/turisticka?q=kostel%20pov%C3%BD%C5%A1en%C3%AD%20svat%C3%A9ho%20k%C5%99%C3%AD%C5%BEe&source=base&id=2076040&ds=2&x=17.7041391&y=48.9021002&z=15",
-    frameTitle: "Obřad na mapě",
+    href: "https://www.google.com/maps/place/%C5%98%C3%ADmskokatolick%C3%A1+farnost+Str%C3%A1n%C3%AD/@48.9035576,17.6974566,2770m/data=!3m1!1e3!4m6!3m5!1s0x47135cae3283fc2d:0xf1900feacc846c82!8m2!3d48.9036134!4d17.7020577!16s%2Fg%2F11g0g4s3f8?entry=ttu&g_ep=EgoyMDI2MDQwOC4wIKXMDSoASAFQAw%3D%3D",
+    embedSrc:
+      "https://www.google.com/maps?q=48.9036134,17.7020577&z=15&output=embed",
+    frameTitle: "Obřad na Google Maps",
+    buttonLabel: "Otevřít v Google Maps",
   },
   reception: {
     label: "Oslava",
     title: "Kavárna Květná",
-    href: "https://mapy.com/cs/turisticka?source=firm&id=13320079&ds=1&x=17.7193496&y=48.8854244&z=16",
-    frameTitle: "Oslava na mapě",
+    href: "https://www.google.com/maps/place/Restarurace+KAV%C3%81RNA+Kv%C4%9Btn%C3%A1/@48.8859726,17.7087622,2325m/data=!3m1!1e3!4m10!1m2!2m1!1zUmVzdGF1cmFjZSBrYXbDoXJuYSBLdsSbdG7DoQ!3m6!1s0x47135b649aad93bf:0x45b305dcd48d0dcb!8m2!3d48.8850824!4d17.720766!15sChxSZXN0YXVyYWNlIGthdsOhcm5hIEt2xJt0bsOhWh4iHHJlc3RhdXJhY2Uga2F2w6FybmEga3bEm3Ruw6GSAQpyZXN0YXVyYW50mgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDIxYWRFNXNPVlpSTWpseFRUQmFjbHBWY0U5VVZrcHFXa1JrYWxReFJSQULgAQD6AQUI5QEQKw!16s%2Fg%2F11fmx0vy5h?entry=ttu&g_ep=EgoyMDI2MDQwOC4wIKXMDSoASAFQAw%3D%3D",
+    embedSrc:
+      "https://www.google.com/maps?q=48.8850824,17.720766&z=16&output=embed",
+    frameTitle: "Oslava na Google Maps",
+    buttonLabel: "Otevřít v Google Maps",
   },
 };
 
