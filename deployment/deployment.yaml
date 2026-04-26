@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: ghcr.io/repk1ns/novomanzelemiklasovi.cz:v1.0.0
+          image: ghcr.io/repk1ns/novomanzelemiklasovi.cz:v1.0.1
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
