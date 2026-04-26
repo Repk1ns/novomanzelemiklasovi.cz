@@ -115,11 +115,7 @@ export const contacts = [
 
 export const drivers = [
   {
-    name: "Jenda",
-    phone: "+420 777 111 222",
-  },
-  {
-    name: "Tonda",
-    phone: "+420 777 333 444",
+    name: "Tomáš",
+    phone: "+420 604 385 270",
   },
 ];

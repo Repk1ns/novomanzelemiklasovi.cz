@@ -54,11 +54,17 @@ export default function PeopleSection() {
           <p className="text-sm uppercase tracking-[0.2em] text-[#9b6b74]">
             Řidiči
           </p>
-          <div className="mt-4 grid gap-4 md:grid-cols-2">
+          <div
+            className={`mt-4 grid gap-4 ${
+              drivers.length === 1
+                ? "justify-items-center md:grid-cols-1"
+                : "md:grid-cols-2"
+            }`}
+          >
             {drivers.map((driver) => (
               <div
                 key={driver.name}
-                className="rounded-3xl border border-[#ead7d4] bg-[#fcf7f5] p-5 text-center"
+                className="w-full max-w-sm rounded-3xl border border-[#ead7d4] bg-[#fcf7f5] p-5 text-center"
               >
                 <p className="font-(--font-display) text-3xl text-[#4e2731]">
                   {driver.name}
