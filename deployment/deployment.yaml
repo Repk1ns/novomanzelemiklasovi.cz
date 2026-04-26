@@ -25,6 +25,27 @@ spec:
               drop: ["ALL"]
           ports:
             - containerPort: 3000
+          env:
+            - name: BREVO_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: novomanzelemiklasovi-secrets
+                  key: BREVO_API_KEY
+            - name: BREVO_SENDER_EMAIL
+              valueFrom:
+                configMapKeyRef:
+                  name: novomanzelemiklasovi-config
+                  key: BREVO_SENDER_EMAIL
+            - name: BREVO_SENDER_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: novomanzelemiklasovi-config
+                  key: BREVO_SENDER_NAME
+            - name: RSVP_RECIPIENT_EMAIL
+              valueFrom:
+                configMapKeyRef:
+                  name: novomanzelemiklasovi-config
+                  key: RSVP_RECIPIENT_EMAIL
           volumeMounts:
             - name: next-cache
               mountPath: /app/.next/cache

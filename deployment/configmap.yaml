@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: novomanzelemiklasovi-config
+  namespace: novomanzelemiklasovi
+data:
+  BREVO_SENDER_EMAIL: "popelkajan77@gmail.com"
+  BREVO_SENDER_NAME: "Novomanzele Miklasovi"
+  RSVP_RECIPIENT_EMAIL: "novomanzelemiklasovi@seznam.cz"
